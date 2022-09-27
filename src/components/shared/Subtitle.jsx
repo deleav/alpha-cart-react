@@ -1,7 +1,3 @@
-export default function Subtitle() {
-  return (
-    <h2 className="subtitle">
-      <slot />
-    </h2>
-  );
+export default function Subtitle({ children }) {
+  return <h2 className="subtitle">{children}</h2>;
 }

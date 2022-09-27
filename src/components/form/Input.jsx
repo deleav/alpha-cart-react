@@ -1,10 +1,11 @@
-import styles from "./input.module.css";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+
+import styles from './input.module.css';
 
 export default function Input({
   value,
   label,
-  type = "text",
+  type = 'text',
   name,
   style,
   placeholder,
@@ -12,7 +13,7 @@ export default function Input({
 }) {
   return (
     <div className={styles.inputContainer} style={style}>
-      <label className={styles.label} for={name}>
+      <label className={styles.label} htmlFor={name}>
         {label}
       </label>
       <input

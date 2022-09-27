@@ -1,1 +1,6 @@
-{}
+{
+  "singleQuote": true,
+  "importOrder": ["^node:", "<THIRD_PARTY_MODULES>", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderParserPlugins": ["typescript", "jsx"]
+}

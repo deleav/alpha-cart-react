@@ -1,9 +1,10 @@
-import getPriceText from "../../utils/getPriceText";
-import styles from "./radio.module.css";
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
+
+import getPriceText from '../../utils/getPriceText';
+import styles from './radio.module.css';
 
 export default function Radio({
-  group = "group",
+  group = 'group',
   price,
   checked,
   title,
@@ -40,4 +41,5 @@ Radio.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  style: PropTypes.object,
 };
