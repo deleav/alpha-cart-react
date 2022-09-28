@@ -4,7 +4,9 @@ import { ReactComponent as ArrowLeft } from '../../assets/arrow-left.svg';
 import Button from './Button';
 import styles from './footer.module.css';
 
-export default function Footer({ step, finalStep, onSubmit, onStepChange }) {
+export default function Footer({ step, onSubmit, onStepChange }) {
+  const finalStep = step === 3;
+
   function handlePrevious() {
     if (!Number.isNaN(step) && step > 1) {
       onStepChange(step - 1);
@@ -36,7 +38,6 @@ export default function Footer({ step, finalStep, onSubmit, onStepChange }) {
 
 Footer.propTypes = {
   step: PropTypes.number,
-  finalStep: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
   onStepChange: PropTypes.func.isRequired,
 };
