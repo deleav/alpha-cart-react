@@ -1,0 +1,40 @@
+.main {
+  display: grid;
+  margin: auto;
+  width: fit-content;
+  padding: 40px;
+  column-gap: 130px;
+  grid-template-columns: 540px 440px;
+  grid-template-rows: 38px 48px 24px 64px 336px 70px;
+  grid-template-areas:
+    'title .'
+    '. .'
+    'step cart'
+    '. cart'
+    'router cart'
+    'footer cart';
+}
+.titleArea {
+  grid-area: title;
+  display: flex;
+  align-items: center;
+  font-size: 32px;
+  font-weight: 700;
+}
+.stepArea {
+  grid-area: step;
+  display: flex;
+  align-items: center;
+}
+.routerArea {
+  grid-area: router;
+}
+.footerArea {
+  grid-area: footer;
+}
+.cartArea {
+  grid-area: cart;
+}
+.resultJson {
+  white-space: pre;
+}
