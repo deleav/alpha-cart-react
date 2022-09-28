@@ -1,21 +1,13 @@
-import PropTypes from 'prop-types';
-
+import { useFormContext } from '../FormContext';
 import Input from '../form/Input';
 import Select from '../form/Select';
 import Subtitle from '../shared/Subtitle';
 import styles from './shippingInfo.module.css';
 
-export default function ShippingInfo({
-  salutation,
-  username,
-  phone,
-  email,
-  city,
-  addr,
-  onFormChange,
-}) {
+export default function ShippingInfo() {
+  const { form, handleFormChange } = useFormContext();
   const handleChange = (fieldName) => (value) => {
-    onFormChange(fieldName, value);
+    handleFormChange(fieldName, value);
   };
   return (
     <div>
@@ -25,7 +17,7 @@ export default function ShippingInfo({
           style={{ gridColumn: '1 / span 2' }}
           label="稱謂"
           name="salutation"
-          value={salutation}
+          value={form.salutation}
           options={[
             { name: '先生', value: 'Mr.' },
             { name: '小姐', value: 'Ms.' },
@@ -37,7 +29,7 @@ export default function ShippingInfo({
           label="姓名"
           type="text"
           name="username"
-          value={username}
+          value={form.username}
           placeholder="請輸入姓名"
           onChange={handleChange('username')}
         />
@@ -46,7 +38,7 @@ export default function ShippingInfo({
           label="電話"
           type="tel"
           name="phone"
-          value={phone}
+          value={form.phone}
           placeholder="請輸入行動電話"
           onChange={handleChange('phone')}
         />
@@ -55,7 +47,7 @@ export default function ShippingInfo({
           label="Email"
           type="email"
           name="email"
-          value={email}
+          value={form.email}
           placeholder="請輸入電子郵件"
           onChange={handleChange('email')}
         />
@@ -63,7 +55,7 @@ export default function ShippingInfo({
           style={{ gridColumn: '1 / span 2' }}
           label="縣市"
           name="city"
-          value={city}
+          value={form.city}
           options={[{ name: '台北', value: 'Taipei' }]}
           disabledOption="請選擇縣市"
           onChange={handleChange('city')}
@@ -73,7 +65,7 @@ export default function ShippingInfo({
           label="地址"
           type="text"
           name="addr"
-          value={addr}
+          value={form.addr}
           placeholder="請輸入地址"
           onChange={handleChange('addr')}
         />
@@ -81,12 +73,3 @@ export default function ShippingInfo({
     </div>
   );
 }
-
-ShippingInfo.propTypes = {
-  salutation: PropTypes.string,
-  username: PropTypes.string,
-  phone: PropTypes.string,
-  email: PropTypes.string,
-  city: PropTypes.string,
-  addr: PropTypes.string,
-};

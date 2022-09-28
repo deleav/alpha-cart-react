@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import product1 from '../../assets/product1.jpg';
 import product2 from '../../assets/product2.jpg';
 import getPriceText from '../../utils/getPriceText';
+import { useFormContext } from '../FormContext';
 import Item from './Item';
 import PriceRow from './PriceRow';
 import styles from './cart.module.css';
@@ -29,18 +29,19 @@ function getPrice(items) {
   }, 0);
 }
 
-export default function Cart({ shippingFee, onChange }) {
+export default function Cart() {
+  const { form, handleFormChange } = useFormContext();
   const [items, setItems] = useState(defaultItems);
   const price = getPrice(items);
-  const priceText = getPriceText(price + shippingFee);
-  const shippingFeeText = getPriceText(shippingFee);
+  const priceText = getPriceText(price + form.shippingFee);
+  const shippingFeeText = getPriceText(form.shippingFee);
 
   const handleItemUpdate = (items) => {
     setItems([...items]);
     const price = getPrice(items);
-    const total = price + shippingFee;
+    const total = price + form.shippingFee;
 
-    onChange(total);
+    handleFormChange('totalPrice', total);
   };
 
   function increaseAmount(index) {
@@ -76,8 +77,3 @@ export default function Cart({ shippingFee, onChange }) {
     </div>
   );
 }
-
-Cart.propTypes = {
-  shippingFee: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired,
-};

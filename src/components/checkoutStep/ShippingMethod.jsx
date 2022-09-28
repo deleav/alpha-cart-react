@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types';
-
+import { useFormContext } from '../FormContext';
 import Radio from '../form/Radio';
 import Subtitle from '../shared/Subtitle';
 import styles from './shippingMethod.module.css';
 
-export default function ShippingMethod({ shippingFee, onFormChange }) {
+export default function ShippingMethod() {
+  const { form, handleFormChange } = useFormContext();
+
   const handleClick = (value) => {
-    onFormChange('shippingFee', value);
+    handleFormChange('shippingFee', value);
   };
 
   return (
@@ -17,13 +18,13 @@ export default function ShippingMethod({ shippingFee, onFormChange }) {
           title="標準運送"
           subtitle="約 3~7 個工作天"
           price={0}
-          checked={shippingFee === 0}
+          checked={form.shippingFee === 0}
           onChange={handleClick}
         />
         <Radio
           title="DHL 貨運"
           subtitle="48 小時內送達"
-          checked={shippingFee === 500}
+          checked={form.shippingFee === 500}
           price={500}
           onChange={handleClick}
         />
@@ -31,8 +32,3 @@ export default function ShippingMethod({ shippingFee, onFormChange }) {
     </div>
   );
 }
-
-ShippingMethod.propTypes = {
-  shippingFee: PropTypes.number.isRequired,
-  onFormChange: PropTypes.func.isRequired,
-};

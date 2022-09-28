@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import FormContext, { initialValues } from './FormContext';
 import Cart from './cart/Cart';
 import PaymentInfo from './checkoutStep/PaymentInfo';
 import ShippingInfo from './checkoutStep/ShippingInfo';
@@ -8,21 +9,6 @@ import Footer from './footer/Footer';
 import styles from './main.module.css';
 import Modal from './modal/Modal';
 import StepContainer from './step/StepContainer';
-
-const initialValues = {
-  salutation: 'Mr.',
-  username: '',
-  phone: '',
-  email: '',
-  city: '',
-  addr: '',
-  shippingFee: 0,
-  ccname: '',
-  cardnumber: '',
-  expdate: '',
-  cvv: '',
-  totalPrice: 0,
-};
 
 export default function Main() {
   const [step, setStep] = useState(1);
@@ -45,63 +31,37 @@ export default function Main() {
   };
 
   return (
-    <div className={styles.main}>
-      <div className={styles.titleArea}>結帳</div>
-      <div className={styles.stepArea}>
-        <StepContainer currentStep={step} />
+    <FormContext.Provider value={{ form, handleFormChange }}>
+      <div className={styles.main}>
+        <div className={styles.titleArea}>結帳</div>
+        <div className={styles.stepArea}>
+          <StepContainer currentStep={step} />
+        </div>
+        <div className={styles.routerArea}>
+          {(() => {
+            switch (step) {
+              case 2:
+                return <ShippingMethod />;
+              case 3:
+                return <PaymentInfo />;
+              case 1:
+              default:
+                return <ShippingInfo />;
+            }
+          })()}
+        </div>
+        <div className={styles.footerArea}>
+          <Footer step={step} onSubmit={handleSubmit} onStepChange={setStep} />
+        </div>
+        <div className={styles.cartArea}>
+          <Cart />
+        </div>
+        {isModalOpen && (
+          <Modal onClose={() => setIsModalOpen(false)}>
+            <div className={styles.resultJson}>{prettyFormString}</div>
+          </Modal>
+        )}
       </div>
-      <div className={styles.routerArea}>
-        {(() => {
-          switch (step) {
-            case 2:
-              return (
-                <ShippingMethod
-                  shippingFee={form.shippingFee}
-                  onFormChange={handleFormChange}
-                />
-              );
-            case 3:
-              return (
-                <PaymentInfo
-                  ccname={form.ccname}
-                  cardnumber={form.cardnumber}
-                  expdate={form.expdate}
-                  cvv={form.cvv}
-                  onFormChange={handleFormChange}
-                />
-              );
-            case 1:
-            default:
-              return (
-                <ShippingInfo
-                  salutation={form.salutation}
-                  username={form.username}
-                  phone={form.phone}
-                  email={form.email}
-                  city={form.city}
-                  addr={form.addr}
-                  onFormChange={handleFormChange}
-                />
-              );
-          }
-        })()}
-      </div>
-      <div className={styles.footerArea}>
-        <Footer step={step} onSubmit={handleSubmit} onStepChange={setStep} />
-      </div>
-      <div className={styles.cartArea}>
-        <Cart
-          shippingFee={form.shippingFee}
-          onChange={(value) => {
-            setForm((prev) => ({ ...prev, totalPrice: value }));
-          }}
-        />
-      </div>
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <div className={styles.resultJson}>{prettyFormString}</div>
-        </Modal>
-      )}
-    </div>
+    </FormContext.Provider>
   );
 }

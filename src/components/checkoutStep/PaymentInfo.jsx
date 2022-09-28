@@ -1,17 +1,11 @@
-import PropTypes from 'prop-types';
-
+import { useFormContext } from '../FormContext';
 import Input from '../form/Input';
 import styles from './paymentInfo.module.css';
 
-export default function PaymentInfo({
-  ccname,
-  cardnumber,
-  expdate,
-  cvv,
-  onFormChange,
-}) {
+export default function PaymentInfo() {
+  const { form, handleFormChange } = useFormContext();
   const handleChange = (fieldName) => (value) => {
-    onFormChange(fieldName, value);
+    handleFormChange(fieldName, value);
   };
 
   return (
@@ -21,7 +15,7 @@ export default function PaymentInfo({
         label="持卡人姓名"
         type="text"
         name="ccname"
-        value={ccname}
+        value={form.ccname}
         placeholder="John Doe"
         onChange={handleChange('ccname')}
       />
@@ -30,7 +24,7 @@ export default function PaymentInfo({
         label="卡號"
         type="text"
         name="cardnumber"
-        value={cardnumber}
+        value={form.cardnumber}
         placeholder="1111 2222 3333 4444"
         onChange={handleChange('cardnumber')}
       />
@@ -39,7 +33,7 @@ export default function PaymentInfo({
         label="有效期限"
         type="text"
         name="expdate"
-        value={expdate}
+        value={form.expdate}
         placeholder="MM/YY"
         onChange={handleChange('expdate')}
       />
@@ -48,18 +42,10 @@ export default function PaymentInfo({
         label="CVC / CCV "
         type="text"
         name="cvv"
-        value={cvv}
+        value={form.cvv}
         placeholder="123"
         onChange={handleChange('cvv')}
       />
     </div>
   );
 }
-
-PaymentInfo.propTypes = {
-  ccname: PropTypes.string,
-  cardnumber: PropTypes.string,
-  expdate: PropTypes.string,
-  cvv: PropTypes.string,
-  onFormChange: PropTypes.func.isRequired,
-};
