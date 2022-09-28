@@ -16,9 +16,8 @@ export default function Select({
 }) {
   const [selected, setSelected] = useState(value);
   const handleChange = (e) => {
-    const name = e.target.getAttribute('name');
-    setSelected(name);
-    onChange(name);
+    setSelected(e.target.value);
+    onChange(e.target.value);
   };
 
   return (

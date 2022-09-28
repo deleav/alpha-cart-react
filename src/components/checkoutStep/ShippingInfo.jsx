@@ -14,8 +14,8 @@ export default function ShippingInfo({
   addr,
   onFormChange,
 }) {
-  const handleChange = (fieldName) => (e) => {
-    onFormChange(fieldName, e.target.value);
+  const handleChange = (fieldName) => (value) => {
+    onFormChange(fieldName, value);
   };
   return (
     <div>
