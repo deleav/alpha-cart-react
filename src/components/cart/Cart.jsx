@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 
 import product1 from '../../assets/product1.jpg';
 import product2 from '../../assets/product2.jpg';
@@ -22,43 +21,23 @@ const defaultItems = [
   },
 ];
 
-function getPrice(items) {
-  return items.reduce((acc, cur) => {
-    return (acc += cur.amount * cur.price);
-  }, 0);
-}
-
 export default function Cart({ shippingFee, onChange }) {
-  const [items, setItems] = useState(defaultItems);
-  const price = getPrice(items);
-  const priceText = getPriceText(price + shippingFee);
+  const priceText = getPriceText(0 + shippingFee);
   const shippingFeeText = getPriceText(shippingFee);
 
-  const handleItemUpdate = (items) => {
-    setItems([...items]);
-    const price = getPrice(items);
-    const total = price + shippingFee;
-
-    onChange(total);
-  };
-
   function increaseAmount(index) {
-    items[index].amount++;
-    handleItemUpdate(items);
+    console.log('increaseAmount');
   }
 
   function decreaseAmount(index) {
-    if (items[index].amount > 1) {
-      items[index].amount--;
-      handleItemUpdate(items);
-    }
+    console.log('decreaseAmount');
   }
 
   return (
     <div id="cart-main">
       <div className="title-container">購物籃</div>
       <div className="items-container">
-        {items.map((item, index) => (
+        {defaultItems.map((item, index) => (
           <Item
             key={index}
             index={index}
