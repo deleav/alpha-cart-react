@@ -5,6 +5,7 @@ import product2 from '../../assets/product2.jpg';
 import getPriceText from '../../utils/getPriceText';
 import Item from './Item';
 import PriceRow from './PriceRow';
+import styles from './cart.module.css';
 
 const defaultItems = [
   {
@@ -34,9 +35,9 @@ export default function Cart({ shippingFee, onChange }) {
   }
 
   return (
-    <div id="cart-main">
-      <div className="title-container">購物籃</div>
-      <div className="items-container">
+    <div className={styles.cartMain}>
+      <div className={styles.titleContainer}>購物籃</div>
+      <div className={styles.itemsContainer}>
         {defaultItems.map((item, index) => (
           <Item
             key={index}
@@ -47,7 +48,7 @@ export default function Cart({ shippingFee, onChange }) {
           />
         ))}
       </div>
-      <div className="footer-container">
+      <div className={styles.footerContainer}>
         <PriceRow title="運費" price={shippingFeeText} />
         <PriceRow title="小計" price={priceText} />
       </div>
