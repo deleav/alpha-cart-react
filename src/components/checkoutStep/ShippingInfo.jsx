@@ -89,4 +89,5 @@ ShippingInfo.propTypes = {
   email: PropTypes.string,
   city: PropTypes.string,
   addr: PropTypes.string,
+  onFormChange: PropTypes.func.isRequired,
 };
