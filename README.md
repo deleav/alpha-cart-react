@@ -1,70 +1,133 @@
-# Getting Started with Create React App
+# Alpha Cart React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React version alpha cart.
+This project is written by React and css module.
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+```
+yarn install
+```
 
-### `npm start`
+## Usage
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+yarn start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Structure
 
-### `npm test`
+```
+.
+├── public               # Static file
+└── src                  # All source code
+    ├── assets           # Assets (jpg/svg/...)
+    ├── utils            # Shared function
+    └── components       # All components
+        ├── checkoutStep # Checkout information (ShippingInfo/ShippingMethod/PaymentInfo)
+        ├── footer       # Footer and buttons
+        ├── form         # Form field components (Input/Radio/Select)
+        ├── shared       # Any shared components
+        ├── step         # Current step component
+        └── Main         # Entry component
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Components Design
 
-### `npm run build`
+這裡把比較特別的部分列出來
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Layout
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+大多數都採用 grid system 實作，以 ShippingInfo 為例，這個步驟的 input 元件比較複雜，所以先在 Container 的部分使用 grid 先決定好要切成幾格
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```css
+.shippingInfoMain {
+  display: grid;
+  grid-template-columns: repeat(6, 65px);
+  grid-template-rows: repeat(3, 64px);
+  gap: 24px 30px;
+}
+```
 
-### `npm run eject`
+然後用 inline style 來決定該元件要怎麼放進這些格子內
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```jsx
+<div className={styles.shippingInfoMain}>
+  <Select
+    style={{ gridColumn: '1 / span 2' }}
+    label="稱謂"
+    name="salutation"
+    value={salutation}
+    options={[
+      { name: '先生', value: 'Mr.' },
+      { name: '小姐', value: 'Ms.' },
+    ]}
+    onChange={handleChange('salutation')}
+  />
+</div>
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Form Components
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Input/Radio/Select 這類 Form 表單的設計都與原生的行為接近，至少都能接收 value 以及 onChange，來做到這兩件事
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. 依照 value 渲染
+2. 根據事件更改 value
 
-## Learn More
+以及這幾個元件行為、樣式相同，有一定的複雜度，又被大量使用，所以將之抽象化，包成元件重複使用
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Form State Control
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+作業 3 之後才有的部分
 
-### Code Splitting
+這裡作法很簡單，把整個 form 放進 state，更新的時候另外寫 `handleFormChange`，用 key 當第一個參數，value 當第二個參數，來更新欄位內容
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```jsx
+// Main.jsx
+export default function Main() {
+  const [form, setForm] = useState(initialValues);
 
-### Analyzing the Bundle Size
+  const handleFormChange = (name, value) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+  // ...
+}
+```
 
-### Making a Progressive Web App
+### Context State Control
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+作業 4 之後才有的部分
 
-### Advanced Configuration
+由於作業 3 已經有將整體更新策略給設計好了，所以這裡就直接把整個 form 放進 context，然後在需要的地方使用，就不需要透過 Props 一路往下傳到最底下
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```jsx
+// Main.jsx
+export default function Main() {
+  const [form, setForm] = useState(initialValues);
 
-### Deployment
+  const handleFormChange = (name, value) => {
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+  // pseudo code
+  return (
+    <FormContext.Provider value={{ form, handleFormChange }}>
+      <div className={styles.main}>
+        <Step />
+        <PaymentInfo />
+        <Footer />
+      </div>
+    </FormContext.Provider>
+  );
+}
+```
 
-### `npm run build` fails to minify
+```jsx
+// ShippingInfo.jsx
+export default function ShippingInfo() {
+  const { form, handleFormChange } = useContext(FormContext);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  // ...
+}
+```
