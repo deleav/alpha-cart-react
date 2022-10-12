@@ -32,7 +32,13 @@ export default function Main() {
 
   return (
     <FormContext.Provider value={{ form, handleFormChange }}>
-      <div className={styles.main}>
+      <form
+        className={styles.main}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+      >
         <div className={styles.titleArea}>結帳</div>
         <div className={styles.stepArea}>
           <StepContainer currentStep={step} />
@@ -51,7 +57,7 @@ export default function Main() {
           })()}
         </div>
         <div className={styles.footerArea}>
-          <Footer step={step} onSubmit={handleSubmit} onStepChange={setStep} />
+          <Footer step={step} onStepChange={setStep} />
         </div>
         <div className={styles.cartArea}>
           <Cart />
@@ -61,7 +67,7 @@ export default function Main() {
             <div className={styles.resultJson}>{prettyFormString}</div>
           </Modal>
         )}
-      </div>
+      </form>
     </FormContext.Provider>
   );
 }

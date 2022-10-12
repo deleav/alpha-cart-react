@@ -22,6 +22,7 @@ export default function Input({
         id={name}
         name={name}
         type={type}
+        required={true}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
       />

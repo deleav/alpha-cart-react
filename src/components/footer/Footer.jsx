@@ -4,7 +4,7 @@ import { ReactComponent as ArrowLeft } from '../../assets/arrow-left.svg';
 import Button from './Button';
 import styles from './footer.module.css';
 
-export default function Footer({ step, onSubmit, onStepChange }) {
+export default function Footer({ step, onStepChange }) {
   const finalStep = step === 3;
 
   function handlePrevious() {
@@ -12,8 +12,8 @@ export default function Footer({ step, onSubmit, onStepChange }) {
       onStepChange(step - 1);
     }
   }
-  function handleNext() {
-    if (finalStep) return onSubmit();
+  function handleNext(e) {
+    if (!finalStep) e.preventDefault();
     if (!Number.isNaN(step) && step < 3) {
       onStepChange(step + 1);
     }
@@ -25,6 +25,7 @@ export default function Footer({ step, onSubmit, onStepChange }) {
       </Button>
       <Button
         onClick={handleNext}
+        type={finalStep ? 'submit' : 'button'}
         intent="primary"
         rightNode={
           !finalStep && <ArrowLeft style={{ transform: 'rotate(180deg)' }} />
@@ -38,6 +39,5 @@ export default function Footer({ step, onSubmit, onStepChange }) {
 
 Footer.propTypes = {
   step: PropTypes.number,
-  onSubmit: PropTypes.func.isRequired,
   onStepChange: PropTypes.func.isRequired,
 };

@@ -9,10 +9,12 @@ export default function Button({
   leftNode,
   rightNode,
   intent = 'text',
+  type,
 }) {
   return (
     <button
       onClick={onClick}
+      type={type || 'button'}
       className={classNames({
         [styles.button]: true,
         [styles.primary]: intent === 'primary',
@@ -31,4 +33,5 @@ Button.propTypes = {
   rightNode: PropTypes.node,
   onClick: PropTypes.func,
   intent: PropTypes.oneOf(['primary', 'text']),
+  type: PropTypes.oneOf(['button', 'submit']),
 };
